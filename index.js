@@ -41,7 +41,7 @@ function handleAutomationSnapshot(change, client) {
     const payload = data.turnOn ? "1" : "0";
 
     // Perform MQTT push
-    client.publish(topic, payload, (err) => {
+    client.publish(topic, payload, { retain: true }, (err) => {
       if (err) {
         console.error("Error publishing MQTT message:", err);
       } else {
@@ -80,7 +80,7 @@ function handleAllAutomations(client) {
           const payload = data.turnOn ? "1" : "0";
 
           // Perform MQTT push
-          client.publish(topic, payload, (err) => {
+          client.publish(topic, payload, { retain: true }, (err) => {
             if (err) {
               console.error("Error publishing MQTT message:", err);
             } else {
@@ -90,7 +90,7 @@ function handleAllAutomations(client) {
 
           // If automation is not set to repeat, delete it
           if (data.isRepeat === false) {
-            change.ref
+            doc.ref
               .delete()
               .then(() => {
                 console.log("Automation deleted");
